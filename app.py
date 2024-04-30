@@ -9,17 +9,17 @@ tarefas = []
 
 # Função para salvar tarefas
 def salvar_tarefas(arquivo):
-    """
-    Salva a lista de tarefas em um arquivo JSON.
-    """
+    
+    # Salva a lista de tarefas em um arquivo JSON.
+
     with open(arquivo, 'w') as f:
         json.dump(tarefas, f)
 
 # Função para carregar tarefas
 def carregar_tarefas(arquivo):
-    """
-    Carrega a lista de tarefas de um arquivo JSON.
-    """
+    
+    #Carrega a lista de tarefas de um arquivo JSON.
+    
     try:
         with open(arquivo, 'r') as f:
             global tarefas  # Declare a variável global
@@ -32,13 +32,13 @@ carregar_tarefas(ARQUIVO_JSON)
 
 # Função para criar a janela inicial
 def criar_janela_inicial():
-    """
-    Cria e retorna a janela principal da aplicação.
-    """
-    sg.theme('DarkTeal12')
+    
+    #Cria e retorna a janela principal da aplicação.
+    
+    sg.theme('DarkTeal9')
     layout = [
         [sg.Text('Tarefas', font=('Helvetica', 20))],
-        [sg.Listbox(values=tarefas, size=(40, 10), key='-LIST-', enable_events=True)],
+        [sg.Listbox(values=tarefas, size=(80, 15), key='-LIST-', enable_events=True)],
         [sg.InputText(key='-TAREFA-'), sg.Button('Adicionar', key='-ADICIONAR-'),
          sg.Button('Editar', key='-EDITAR-'), sg.Button('Excluir', key='-EXCLUIR-')],
         [sg.Button('Resetar', key='-RESETAR-'), sg.Button('Salvar', key='-SALVAR-')]
@@ -62,16 +62,18 @@ while True:
             janela['-LIST-'].update(values=tarefas)
             janela['-TAREFA-'].update('')  # Limpar campo de entrada
     elif event == '-EDITAR-':
-        if values['-LIST-']:
-            index = values['-LIST-'].index(values['-LIST-'][0])
+        index = values['-LIST-'][0] if values['-LIST-'] else None
+        if index is not None:
+            index = tarefas.index(index)
             nova_tarefa = sg.popup_get_text('Editar Tarefa', default_text=tarefas[index])
             if nova_tarefa.strip():
                 tarefas[index] = nova_tarefa
                 janela['-LIST-'].update(values=tarefas)
     elif event == '-EXCLUIR-':
-        if values['-LIST-']:
+        index = values['-LIST-'][0] if values['-LIST-'] else None
+        if index is not None:
+            index = tarefas.index(index)
             if sg.popup_yes_no('Tem certeza que deseja excluir esta tarefa?') == 'Yes':
-                index = values['-LIST-'].index(values['-LIST-'][0])
                 del tarefas[index]
                 janela['-LIST-'].update(values=tarefas)
     elif event == '-RESETAR-':
