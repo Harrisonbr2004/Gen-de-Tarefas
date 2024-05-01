@@ -35,7 +35,7 @@ def criar_janela_inicial():
     
     #Cria e retorna a janela principal da aplicação.
     
-    sg.theme('DarkTeal9')
+    sg.theme('NeonBlue1')
     layout = [
         [sg.Text('Tarefas', font=('Helvetica', 20))],
         [sg.Listbox(values=tarefas, size=(80, 15), key='-LIST-', enable_events=True)],
@@ -55,12 +55,14 @@ while True:
     # Verificar o tipo de evento
     if event == sg.WIN_CLOSED:
         break  # Fechar a janela e sair do loop
+    
     elif event == '-ADICIONAR-':
         tarefa = values['-TAREFA-'].strip()
         if tarefa:
             tarefas.append(tarefa)
             janela['-LIST-'].update(values=tarefas)
             janela['-TAREFA-'].update('')  # Limpar campo de entrada
+            
     elif event == '-EDITAR-':
         index = values['-LIST-'][0] if values['-LIST-'] else None
         if index is not None:
@@ -69,6 +71,7 @@ while True:
             if nova_tarefa.strip():
                 tarefas[index] = nova_tarefa
                 janela['-LIST-'].update(values=tarefas)
+
     elif event == '-EXCLUIR-':
         index = values['-LIST-'][0] if values['-LIST-'] else None
         if index is not None:
@@ -76,6 +79,7 @@ while True:
             if sg.popup_yes_no('Tem certeza que deseja excluir esta tarefa?') == 'Yes':
                 del tarefas[index]
                 janela['-LIST-'].update(values=tarefas)
+
     elif event == '-RESETAR-':
         janela.close()
         tarefas = []
