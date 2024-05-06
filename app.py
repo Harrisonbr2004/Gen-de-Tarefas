@@ -35,7 +35,7 @@ def criar_janela_inicial():
     
     #Cria e retorna a janela principal da aplicação.
     
-    sg.theme('NeonBlue1')
+    sg.theme('DarkTeal9')
     layout = [
         [sg.Text('Tarefas', font=('Helvetica', 20))],
         [sg.Listbox(values=tarefas, size=(80, 15), key='-LIST-', enable_events=True)],
