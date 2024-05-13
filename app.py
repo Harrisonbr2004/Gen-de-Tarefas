@@ -1,40 +1,25 @@
 import PySimpleGUI as sg
 import json
 
-# Nome do arquivo JSON para salvar as tarefas
 ARQUIVO_JSON = 'tarefas.json'
 
-# Lista de tarefas inicial
 tarefas = []
 
-# Função para salvar tarefas
 def salvar_tarefas(arquivo):
-    
-    # Salva a lista de tarefas em um arquivo JSON.
-
     with open(arquivo, 'w') as f:
         json.dump(tarefas, f)
-
-# Função para carregar tarefas
+        
 def carregar_tarefas(arquivo):
-    
-    #Carrega a lista de tarefas de um arquivo JSON.
-    
     try:
         with open(arquivo, 'r') as f:
-            global tarefas  # Declare a variável global
+            global tarefas
             tarefas = json.load(f)
     except FileNotFoundError:
-        pass  # Ignore o erro se o arquivo não existir
+        pass
 
-# Carregar tarefas ao iniciar o código
 carregar_tarefas(ARQUIVO_JSON)
 
-# Função para criar a janela inicial
-def criar_janela_inicial():
-    
-    #Cria e retorna a janela principal da aplicação.
-    
+def criar_janela_inicial(): 
     sg.theme('DarkTeal9')
     layout = [
         [sg.Text('Tarefas', font=('Helvetica', 20))],
@@ -44,15 +29,12 @@ def criar_janela_inicial():
         [sg.Button('Resetar', key='-RESETAR-'), sg.Button('Salvar', key='-SALVAR-')]
     ]
     return sg.Window('Gen List', layout)
-
-# Criar a janela principal
+    
 janela = criar_janela_inicial()
 
-# Loop de eventos da janela
 while True:
     event, values = janela.read()
 
-    # Verificar o tipo de evento
     if event == sg.WIN_CLOSED:
         break  # Fechar a janela e sair do loop
     
@@ -61,7 +43,7 @@ while True:
         if tarefa:
             tarefas.append(tarefa)
             janela['-LIST-'].update(values=tarefas)
-            janela['-TAREFA-'].update('')  # Limpar campo de entrada
+            janela['-TAREFA-'].update('')
             
     elif event == '-EDITAR-':
         index = values['-LIST-'][0] if values['-LIST-'] else None
@@ -87,8 +69,6 @@ while True:
     elif event == '-SALVAR-':
         salvar_tarefas(ARQUIVO_JSON)
 
-# Salvar tarefas antes de fechar a janela
 salvar_tarefas(ARQUIVO_JSON)
 
-# Fechar a janela principal
 janela.close()
